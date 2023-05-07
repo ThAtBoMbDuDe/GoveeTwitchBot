@@ -21,8 +21,9 @@ const sendMessage = () => {
   const now = Date.now();
   if(now - commandListTimestamp < sendIntervalMs) {
     return}
-  client.say(twitchChannel, `Good Company Bot is online and ready to mingle! If you would like to find out more about the members of Good Company, then '$' and '?' commands are the way. A '$' followed by a name you know at Good Company will give you a list of said persons PR's. A '?' followed by a name will give you a short bio and background of that person. 
-  Good Company: Jon, James, Tal, Joseph, Joey, Veda, Kirsten, Alanna, David, Jake, Alejandro, Amanda, Jenna, Isaiah, Chantel.`)
+  client.say(twitchChannel, `Good Company Bot is online and ready to mingle! If you would like to find out more about the members of Good Company, then '$' and '?' commands are the way. If you would like to change the color of the lights for the gym, then a '!' command is the way. A '$' followed by a name you know at Good Company will give you a list of said persons PR's. A '?' followed by a name will give you a short bio and background of that person. A '!' followed by a color will change the color of the lights.
+  Good Company: Jon, James, Tal, Joseph, Joey, Veda, Kirsten, Alanna, David, Jake, Alejandro, Amanda, Jenna, Isaiah, Chantel.
+  Colors:: !red, !orange, !yellow, !green, !blue, !purple, !sky, !white, !snow, !pink, !aqua, !magenta, !dodger, !spring, !smoke, !lavender, !willywonka, !darth, !barbie, !hooyah.`)
   commandListTimestamp = now;
 };
 
@@ -126,6 +127,36 @@ const setSnowWhite = () => {
   devices.forEach(device => {
     govee.initDevice( goveeToken, device, deviceModel);
     govee.control.setColor(255, 250, 250);
+  });
+};
+const setLavender = () => {
+  devices.forEach(device => {
+    govee.initDevice( goveeToken, device, deviceModel);
+    govee.control.setColor(221, 160, 221);
+  });
+};
+const setChocolate = () => {
+  devices.forEach(device => {
+    govee.initDevice( goveeToken, device, deviceModel);
+    govee.control.setColor(210, 105, 30);
+  });
+};
+const setBlack = () => {
+  devices.forEach(device => {
+    govee.initDevice( goveeToken, device, deviceModel);
+    govee.control.setColor(20, 20, 20);
+  });
+};
+const setHotPink = () => {
+  devices.forEach(device => {
+    govee.initDevice( goveeToken, device, deviceModel);
+    govee.control.setColor(255, 20, 147);
+  });
+};
+const setNavy = () => {
+  devices.forEach(device => {
+    govee.initDevice( goveeToken, device, deviceModel);
+    govee.control.setColor(0, 0, 128);
   });
 };
 
@@ -426,6 +457,49 @@ client.on('chat', async (channel, message, userstate, tags, self) => {
     try {
       setSmokeWhite();
       client.say(channel, `The Lights are Smokey!`);
+    } catch (error) {
+      console.error(`Error setting lights: ${error}`);
+    }
+  };
+  if (chatCommand.toLowerCase() === '!lavender') {
+    try {
+      setLavender();
+      client.say(channel, `The Lights are Lavender!`);
+    } catch (error) {
+      console.error(`Error setting lights: ${error}`);
+    }
+  };
+  if (chatCommand.toLowerCase() === '!willywonka') {
+    try {
+      setChocolate();
+      client.say(channel, `She was a bad egg.`);
+    } catch (error) {
+      console.error(`Error setting lights: ${error}`);
+    }
+  };
+  if (chatCommand.toLowerCase() === '!darth') {
+    try {
+      setBlack();
+      client.say(channel, `I find your lack of faith disturbing.`);
+    } catch (error) {
+      console.error(`Error setting lights: ${error}`);
+    }
+  };
+  if (chatCommand.toLowerCase() === '!barbie') {
+    try {
+      setHotPink();
+      client.say(channel, `Life is plastic. It's fantastic!`);
+    } catch (error) {
+      console.error(`Error setting lights: ${error}`);
+    }
+  };
+  if (chatCommand.toLowerCase() === '!hooyah') {
+    try {
+      setNavy();
+      client.say(channel, `Anchors Aweigh, my boys, Anchors Aweigh.
+      Farewell to college joys, we sail at break of day-ay-ay-ay.
+      Through our last night on shore, drink to the foam,
+      Until we meet once more. Here's wishing you a happy voyage home`);
     } catch (error) {
       console.error(`Error setting lights: ${error}`);
     }
