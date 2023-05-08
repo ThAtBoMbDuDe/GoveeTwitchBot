@@ -1,12 +1,17 @@
 const tmi = require('tmi.js');
 const govee = require('govee-api');
 const config = require('./config.js');
+const videojs = require('video.js')
 
 //variables and functions
 const devices = config.devices
 //NOTE. Govee API only allows for 10 requests per minute, so only set 10 devices per array
 
-
+const player = videojs('video-player', {
+  controls: false,
+  autoplay: true,
+  preload: 'auto',
+});
 const twitchBotToken = config.twitchBotToken;
 const goveeToken = config.goveeToken;
 const deviceModel = config.deviceModel;
@@ -21,9 +26,9 @@ const sendMessage = () => {
   const now = Date.now();
   if(now - commandListTimestamp < sendIntervalMs) {
     return}
-  client.say(twitchChannel, `Good Company Bot is online and ready to mingle! If you would like to find out more about the members of Good Company, then '$' and '?' commands are the way. If you would like to change the color of the lights for the gym, then a '!' command is the way. A '$' followed by a name you know at Good Company will give you a list of said persons PR's. A '?' followed by a name will give you a short bio and background of that person. A '!' followed by a color will change the color of the lights.
-  Good Company: Jon, James, Tal, Joseph, Joey, Veda, Kirsten, Alanna, David, Jake, Alejandro, Amanda, Jenna, Isaiah, Chantel.
-  Colors:: !red, !orange, !yellow, !green, !blue, !purple, !sky, !white, !snow, !pink, !aqua, !magenta, !dodger, !spring, !smoke, !lavender, !willywonka, !darth, !barbie, !hooyah.`)
+  client.say(twitchChannel, `Good Company Bot is online and ready to mingle! If you would like to find out more about the members of Good Company, then '$' and '?' commands are the way. If you would like to change the color of the lights for the gym, then a '!' command is the way. A '$' followed by a name you know at Good Company will give you a list of said persons PR's. A '?' followed by a name will give you a short bio and background of that person. A '!' followed by a color will change the color of the lights.`);
+  client.say(twitchChannel, ` Good Company: Jon, James, Tal, Joseph, Joey, Veda, Kirsten, Alanna, David, Jake, Alejandro, Amanda, Jenna, Isaiah, Chantel.
+  Colors:: !red, !orange, !yellow, !green, !blue, !purple, !sky, !white, !snow, !pink, !aqua, !magenta, !dodger, !spring, !smoke, !lavender, !willywonka, !darth, !barbie, !hooyah.`);
   commandListTimestamp = now;
 };
 
@@ -214,40 +219,40 @@ client.on('chat', (channel, message, userstate, self, tags) => {
       client.say(channel, 'Jon was born and raised in Amish country Pennsylvania. He served in the U.S. Navy for 5 years as a Rescue Swimmer. Currently, Jon is working as a builder and Co-Owner at OWR. Working out is his passion, hence why he and OWR built this gym.')
     };
     if(chatMessage.toLowerCase() === '?james') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'James bio pending')
     };
     if(chatMessage.toLowerCase() === '?joah' || chatMessage.toLowerCase() === '?joseph') {
       client.say(channel, 'Joseph was born and raised in Lancaster, Pennsylvania. His workout style is muscle isolation, calisthenics, and full body HIT training. His goals are to reach 190lbs body weight while maintaining 7% body fat. His PR goals are to bench 315, squat 405, and deadlift 500.')
     };
     if(chatMessage.toLowerCase() === '?al' || chatMessage.toLowerCase() === '?alejandro') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Als bio pending')
     };
     if(chatMessage.toLowerCase() === '?tal') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Tals bio pending')
     };
     if(chatMessage.toLowerCase() === '?david' || chatMessage.toLowerCase() === '?dave') {
       client.say(channel, 'Just Dave.')
     };
     if(chatMessage.toLowerCase() === '?isaiah') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Isaiahs bio pending')
     };
     if(chatMessage.toLowerCase() === '?joey') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Joeys bio pending')
     };
     if(chatMessage.toLowerCase() === '?chantel') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Chantels bio pending')
     };
     if(chatMessage.toLowerCase() === '?jenna') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Jennas bio pending')
     };
     if(chatMessage.toLowerCase() === '?alanna') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Alannas bio pending')
     };
     if(chatMessage.toLowerCase() === '?amanda') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Amandas bio pending')
     };
     if(chatMessage.toLowerCase() === '?kirsten') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Kirstens bio pending')
     };
     if(chatMessage.toLowerCase() === '?epstein') {
       client.say(channel, 'Epstein did not kill himself.')
@@ -282,42 +287,55 @@ client.on('chat', (channel, message, userstate, self, tags) => {
       client.say(channel, 'Jons PR === Bench:315 | Back Squat:365 | Deadlift:500 | Clean:295 | 1.5Mile=8:59 | Half-Marathon=2:06:27')
     };
     if(chatMessage.toLowerCase() === '$james') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'James PRs pending')
     };
     if(chatMessage.toLowerCase() === '$joah' || chatMessage.toLowerCase() === '$joseph') {
       client.say(channel, 'Josephs PR === Bench:275 || Back Squat:365 || Deadlift:405 || Half-Marathon=2:15:41')
     };
     if(chatMessage.toLowerCase() === '$al' || chatMessage.toLowerCase() === '$alejandro') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Als PRs pending')
     };
     if(chatMessage.toLowerCase() === '$tal') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Tals PRs pending')
     };
     if(chatMessage.toLowerCase() === '$david' || chatMessage.toLowerCase() === '$dave') {
       client.say(channel, 'Davids PR === Bench:365 | Overhead Press:225 | Back Squat:405 | Deadlift:315 | Front Squat:245  | Pull-ups:26 | 1.5Mile=8:56 | 500mSwim=6:15 | .25Mile=0:52 | 1min Push-ups:115 | 1min Sit-ups: 120')
     };
     if(chatMessage.toLowerCase() === '$isaiah') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Isaiahs PRs pending')
     };
     if(chatMessage.toLowerCase() === '$joey') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Joeys PRs pending')
     };
     if(chatMessage.toLowerCase() === '$chantel') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Chantels PRs pending')
     };
     if(chatMessage.toLowerCase() === '$jenna') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Jennas PRs pending')
     };
     if(chatMessage.toLowerCase() === '$alanna') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Alannas PRs pending')
     };
     if(chatMessage.toLowerCase() === '$amanda') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Amandas PRs pending')
     };
     if(chatMessage.toLowerCase() === '$kirsten') {
-      client.say(channel, 'Jake served in the U.S. Navy for 7 years as a Navy EOD Tech.')
+      client.say(channel, 'Kirstens PRs pending')
     };
     prCommandTimestamp = now;
+});
+
+
+//First time chat listener
+client.on('chat', (channel, message, userstate, tags, self) => {
+  if (self) return;
+  const chatter = message.username
+  const firstTimer = message['first-msg'];
+  if(firstTimer === true){
+    client.say(twitchChannel, `Welcome ${chatter} to Good Company! Stick around and hang a while! We've got '$' and '?' commands for info on all of the people at Good Company. If you'd like the change the color of the gym lighting, try '!' commands. Don't be afraid to chat away and we hope you enjoy the stream!`);
+    client.say(twitchChannel, ` Good Company: Jon, James, Tal, Joseph, Joey, Veda, Kirsten, Alanna, David, Jake, Alejandro, Amanda, Jenna, Isaiah, Chantel.
+    Colors:: !red, !orange, !yellow, !green, !blue, !purple, !sky, !white, !snow, !pink, !aqua, !magenta, !dodger, !spring, !smoke, !lavender, !willywonka, !darth, !barbie, !hooyah.`);
+  };
 });
 
 
@@ -507,5 +525,26 @@ client.on('chat', async (channel, message, userstate, tags, self) => {
   lightCommandTimestamp = now;
 });
 
+client.on('chat', (channel, message, userstate, tags, self) => {
+  const videoCommand = userstate
+
+  if (!chatCommand.startsWith('&')) {
+    return
+  };
+  // Check if the message is a "!play" command
+  if (videoCommand.toLowerCase() === '&tal') {
+    // Get the YouTube video ID from a URL (e.g. "https://www.youtube.com/watch?v=VIDEO_ID")
+    const videoId = 'MFOqoKX8n88';
+
+    // Create a URL for the YouTube video
+    const videoUrl = `https://www.youtube.com/embed/${videoId}?controls=0?autoplay=1`;
+
+    // Set the source of the video player to the YouTube video URL
+    player.src(videoUrl);
+
+    // Show the video overlay
+    player.show();
+  }
+});
 
 
