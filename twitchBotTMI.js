@@ -1,27 +1,25 @@
 const tmi = require('tmi.js');
 const govee = require('govee-api');
 const config = require('./config.js');
-const videojs = require('video.js')
+const {default: OBSWebSocket} = require('obs-websocket-js')
+
 
 //variables and functions
 const devices = config.devices
 //NOTE. Govee API only allows for 10 requests per minute, so only set 10 devices per array
-
-const player = videojs('video-player', {
-  controls: false,
-  autoplay: true,
-  preload: 'auto',
-});
 const twitchBotToken = config.twitchBotToken;
 const goveeToken = config.goveeToken;
 const deviceModel = config.deviceModel;
 const twitchBotName = config.twitchBotName;
 const twitchChannel= config.twitchChannel;
+const obsAddress = config.obsAddress;
+const obsPass = config.obsPass;
 let lightCommandTimestamp = 0;
 let prCommandTimestamp = 0;
 let bioCommandTimestamp = 0;
-let commandListTimestamp = 0
-const sendIntervalMs = 900000
+let commandListTimestamp = 0;
+const sendIntervalMs = 900000;
+
 const sendMessage = () => {
   const now = Date.now();
   if(now - commandListTimestamp < sendIntervalMs) {
@@ -182,7 +180,10 @@ identity: {
 channels: [twitchChannel]
 };
 const client = new tmi.Client(options);
+const obs = new OBSWebSocket();
 
+//OBS port= 4455    eg. ws://IPADDRESS:4455
+await obs.connect(obsAddress, obsPass);
 client.connect();
 
 client.on('connected', (address, port) => {
@@ -525,26 +526,30 @@ client.on('chat', async (channel, message, userstate, tags, self) => {
   lightCommandTimestamp = now;
 });
 
-client.on('chat', (channel, message, userstate, tags, self) => {
-  const videoCommand = userstate
 
-  if (!chatCommand.startsWith('&')) {
-    return
+//OBS Scene and Media Source player *UPDATE OBS ADDRESS*
+//https://github.com/obs-websocket-community-projects/obs-websocket-js
+client.on('chat', (channel, tags, userstate, message, self) => {
+  if(self)return;
+  const vidCommand = userstate;
+  if(!vidCommand.startsWith('&')){
+   return;
   };
-  // Check if the message is a "!play" command
-  if (videoCommand.toLowerCase() === '&tal') {
-    // Get the YouTube video ID from a URL (e.g. "https://www.youtube.com/watch?v=VIDEO_ID")
-    const videoId = 'MFOqoKX8n88';
+  if(vidCommand === '&tal'){
+    //Show video source
+    obs.send('SetSourceRender', { 
+      source: 'MEDIA SOURCE NAME',
+      render: true,
+    });
+    //Hide video source
+    obs.send('SetSourceRender', { 
+      source: 'MEDIA SOURCE NAME',
+      render: false,
+    });
+  };
 
-    // Create a URL for the YouTube video
-    const videoUrl = `https://www.youtube.com/embed/${videoId}?controls=0?autoplay=1`;
-
-    // Set the source of the video player to the YouTube video URL
-    player.src(videoUrl);
-
-    // Show the video overlay
-    player.show();
-  }
 });
+
+
 
 
